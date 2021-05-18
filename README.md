@@ -23,7 +23,7 @@ To interact with maimai net, first you have to create a session, then call the `
 
 ```js
 const session = new Session()
-const result = session.login({
+const result = await session.login({
   sid: "input the sega id here",
   password: "input the password here",
 })
