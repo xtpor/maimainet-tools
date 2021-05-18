@@ -1,13 +1,14 @@
 
-import fetch from "cross-fetch"
+const fetch = require("cross-fetch")
 
-export default class Fetcher {
+class Fetcher {
   userAgent = ""
   cookies = {}
 
   constructor(options) {
     this.userAgent = options.userAgent
     this.cookies = options.cookies || this.cookies
+    this.logger = options.logger || null
   }
 
   async get(url) {
@@ -17,7 +18,7 @@ export default class Fetcher {
     })
     this._updateCookies(response)
 
-    console.log(`GET ${url} ${response.status}`)
+    this._log(`GET ${url} ${response.status}`)
     if (300 <= response.status && response.status <= 399) {
       return this.get(response.headers.get("location"))
     } else {
@@ -40,7 +41,7 @@ export default class Fetcher {
     })
     this._updateCookies(response)
 
-    console.log(`POST ${url} ${response.status}`)
+    this._log(`POST ${url} ${response.status}`)
     if (300 <= response.status && response.status <= 399) {
       return this.get(response.headers.get("location"))
     } else {
@@ -54,6 +55,12 @@ export default class Fetcher {
 
   _updateCookies(response) {
     this.cookies = mergeCookies(this.cookies, parseSetCookie(response))
+  }
+
+  _log(msg) {
+    if (typeof this.logger === "function") {
+      this.logger(msg)
+    }
   }
 
 }
@@ -131,3 +138,5 @@ function mergeCookies(ca, cb) {
 
   return result
 }
+
+module.exports = Fetcher

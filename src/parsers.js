@@ -1,9 +1,7 @@
 
-import assert from "assert"
+const assert = require("assert")
 
-import { URL } from "url"
-import nodeHtmlParser from "node-html-parser"
-const { parse } = nodeHtmlParser
+const { parse } = require("node-html-parser")
 
 
 function parseUserBlock(dom) {
@@ -35,13 +33,13 @@ function extractFriendCode(dom) {
 }
 
 
-export function parseHomePage(html) {
+function parseHomePage(html) {
   const dom = parse(html)
 
   return parseUserBlock(dom)
 }
 
-export function parseFriendPage(html) {
+function parseFriendPage(html) {
   const dom = parse(html)
 
   const block0 = dom.querySelector(".basic_block.m_3.p_3.f_11")
@@ -71,7 +69,7 @@ export function parseFriendPage(html) {
   return { friends: entries, friendCount, favoriteCount }
 }
 
-export function parseAchievement(text) {
+function parseAchievement(text) {
   if (text.endsWith("%")) {
     text = text.slice(0, -1)
   }
@@ -106,7 +104,7 @@ function parseBadges(dom, idx1, idx2) {
     mapUrlToBadge(img2.getAttribute("src"))]
 }
 
-export function parseVersusPage(html, difficulty) {
+function parseVersusPage(html, difficulty) {
   const dom = parse(html)
   const entries = []
 
@@ -144,13 +142,13 @@ export function parseVersusPage(html, difficulty) {
   return entries
 }
 
-export function parseFriendCodePage(html) {
+function parseFriendCodePage(html) {
   const dom = parse(html)
   const elem = dom.querySelector(".see_through_block .see_through_block")
   return elem.text.trim()
 }
 
-export function parseSearchFriendPage(html) {
+function parseSearchFriendPage(html) {
   const dom = parse(html)
   const block = dom.querySelector(".see_through_block")
 
@@ -165,7 +163,7 @@ export function parseSearchFriendPage(html) {
   }
 }
 
-export function parseInviteEntriesPage(html) {
+function parseInviteEntriesPage(html) {
   const dom = parse(html)
   const result = []
 
@@ -176,7 +174,7 @@ export function parseInviteEntriesPage(html) {
   return result
 }
 
-export function parseAcceptEntriesPage(html) {
+function parseAcceptEntriesPage(html) {
   const dom = parse(html)
   const result = []
 
@@ -185,4 +183,15 @@ export function parseAcceptEntriesPage(html) {
   }
 
   return result
+}
+
+module.exports = {
+  parseHomePage,
+  parseFriendPage,
+  parseAchievement,
+  parseVersusPage,
+  parseFriendCodePage,
+  parseSearchFriendPage,
+  parseInviteEntriesPage,
+  parseAcceptEntriesPage,
 }

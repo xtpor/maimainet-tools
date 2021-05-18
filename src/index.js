@@ -1,4 +1,3 @@
+const { Session, FriendFilter } = require("./session.js")
 
-import { Session, FriendFilter } from "./session.js"
-
-export { Session, FriendFilter }
+module.exports = { Session, FriendFilter }

@@ -1,6 +1,8 @@
 
-export class InvalidSessionError extends Error {
+class InvalidSessionError extends Error {
 }
 
-export class TemporaryError extends Error {
+class TemporaryError extends Error {
 }
+
+module.exports = { InvalidSessionError, TemporaryError }

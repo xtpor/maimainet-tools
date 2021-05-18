@@ -1,6 +1,6 @@
-import fs from "fs"
+const fs = require("fs")
 
-import { Session, FriendFilter } from "../src/index.js"
+const { Session, FriendFilter } = require("..")
 
 const SESSION_STORAGE = "/tmp/maimainet-test.state"
 

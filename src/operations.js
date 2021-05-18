@@ -1,8 +1,8 @@
 
-import { parseHomePage, parseFriendPage, parseFriendCodePage, parseVersusPage,
-  parseSearchFriendPage, parseInviteEntriesPage, parseAcceptEntriesPage } from "./parsers.js"
+const { parseHomePage, parseFriendPage, parseFriendCodePage, parseVersusPage,
+  parseSearchFriendPage, parseInviteEntriesPage, parseAcceptEntriesPage } = require("./parsers.js")
 
-import { TemporaryError } from "./errors.js"
+const { TemporaryError } = require("./errors.js")
 
 const FORM_LOGIN = "https://lng-tgk-aime-gw.am-all.net/common_auth/login/sid/"
 const PAGE_LOGIN  = "https://lng-tgk-aime-gw.am-all.net/common_auth/login?site_id=maimaidxex&redirect_url=https://maimaidx-eng.com/maimai-mobile/&back_url=https://maimai.sega.com/"
@@ -34,13 +34,13 @@ function D_PAGE_SEARCH(friendCode) {
   return `https://maimaidx-eng.com/maimai-mobile/friend/search/searchUser/?friendCode=${friendCode}`
 }
 
-export async function reauthenticate(fetcher) {
+async function reauthenticate(fetcher) {
   const response = await fetcher.get(PAGE_ROOT)
 
   return response.ok && response.url === PAGE_HOME
 }
 
-export async function login(fetcher, sid, password) {
+async function login(fetcher, sid, password) {
   await fetcher.get(PAGE_LOGIN)
   const response = await fetcher.post(FORM_LOGIN, {
     sid: sid,
@@ -53,7 +53,7 @@ export async function login(fetcher, sid, password) {
 
 // queries
 
-export async function getProfile(fetcher) {
+async function getProfile(fetcher) {
   const url = PAGE_HOME
   const response = await fetcher.get(url)
   if (response.url === PAGE_ERROR) throw new TemporaryError()
@@ -65,7 +65,7 @@ export async function getProfile(fetcher) {
   }
 }
 
-export async function getPaginatedFriendList(fetcher, page = 1) {
+async function getPaginatedFriendList(fetcher, page = 1) {
   const url = D_PAGE_FRIENDS_PAGINATED(page)
   const response = await fetcher.get(url)
   if (response.url === PAGE_ERROR) throw new TemporaryError()
@@ -77,7 +77,7 @@ export async function getPaginatedFriendList(fetcher, page = 1) {
   }
 }
 
-export async function getMyFriendCode(fetcher) {
+async function getMyFriendCode(fetcher) {
   const url = PAGE_FRIEND_CODE
   const response = await fetcher.get(url)
   if (response.url === PAGE_ERROR) throw new TemporaryError()
@@ -89,7 +89,7 @@ export async function getMyFriendCode(fetcher) {
   }
 }
 
-export async function getFriendVersus(fetcher, friendCode, difficulty) {
+async function getFriendVersus(fetcher, friendCode, difficulty) {
   const url = D_PAGE_FRIEND_VERSUS(friendCode, difficulty)
   const response = await fetcher.get(url)
   if (response.url === PAGE_ERROR) throw new TemporaryError()
@@ -102,7 +102,7 @@ export async function getFriendVersus(fetcher, friendCode, difficulty) {
   }
 }
 
-export async function getSearchResult(fetcher, friendCode) {
+async function getSearchResult(fetcher, friendCode) {
   const url = D_PAGE_SEARCH(friendCode)
   const response = await fetcher.get(url)
   if (response.url === PAGE_ERROR) throw new TemporaryError()
@@ -115,7 +115,7 @@ export async function getSearchResult(fetcher, friendCode) {
   }
 }
 
-export async function getInviteEntries(fetcher) {
+async function getInviteEntries(fetcher) {
   const url = PAGE_INVITE_ENTRIES_PAGE
   const urlAlt = PAGE_INVITE_ENTRIES_PAGE_ALT
 
@@ -130,7 +130,7 @@ export async function getInviteEntries(fetcher) {
   }
 }
 
-export async function getAcceptEntries(fetcher) {
+async function getAcceptEntries(fetcher) {
   const url = PAGE_ACCEPT_ENTRIES_PAGE
   const urlAlt = PAGE_ACCEPT_ENTRIES_PAGE_ALT
 
@@ -147,7 +147,7 @@ export async function getAcceptEntries(fetcher) {
 
 // actions
 
-export async function doSetFavoriteOn(fetcher, friendCode) {
+async function doSetFavoriteOn(fetcher, friendCode) {
   const url = FORM_FAVORITE_ON
   const response = await fetcher.post(url, {
     idx: friendCode,
@@ -158,7 +158,7 @@ export async function doSetFavoriteOn(fetcher, friendCode) {
   return response.ok && response.url === url
 }
 
-export async function doSetFavoriteOff(fetcher, friendCode) {
+async function doSetFavoriteOff(fetcher, friendCode) {
   const url = FORM_FAVORITE_OFF
   const response = await fetcher.post(url, {
     idx: friendCode,
@@ -169,7 +169,7 @@ export async function doSetFavoriteOff(fetcher, friendCode) {
   return response.ok && response.url === url
 }
 
-export async function doInviteFriend(fetcher, friendCode) {
+async function doInviteFriend(fetcher, friendCode) {
   const url = FORM_INVITE
   const response = await fetcher.post(url, {
     idx: friendCode,
@@ -180,7 +180,7 @@ export async function doInviteFriend(fetcher, friendCode) {
   return response.ok && response.url === url
 }
 
-export async function doAcceptInvitation(fetcher, friendCode) {
+async function doAcceptInvitation(fetcher, friendCode) {
   const url = FORM_ACCEPT
   const response = await fetcher.post(url, {
     idx: friendCode,
@@ -191,7 +191,7 @@ export async function doAcceptInvitation(fetcher, friendCode) {
   return response.ok && response.url === url
 }
 
-export async function doRejectInvitation(fetcher, friendCode) {
+async function doRejectInvitation(fetcher, friendCode) {
   const url = FORM_REJECT
   const response = await fetcher.post(url, {
     idx: friendCode,
@@ -200,4 +200,21 @@ export async function doRejectInvitation(fetcher, friendCode) {
   if (response.url === PAGE_ERROR) throw new TemporaryError()
 
   return response.ok && response.url === url
+}
+
+module.exports = {
+  reauthenticate,
+  login,
+  getProfile,
+  getPaginatedFriendList,
+  getMyFriendCode,
+  getFriendVersus,
+  getSearchResult,
+  getInviteEntries,
+  getAcceptEntries,
+  doSetFavoriteOn,
+  doSetFavoriteOff,
+  doInviteFriend,
+  doAcceptInvitation,
+  doRejectInvitation,
 }

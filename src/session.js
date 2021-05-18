@@ -1,20 +1,20 @@
 
-import assert from "assert"
+const assert = require("assert")
 
-import Fetcher from "./fetcher.js"
-import * as ops from "./operations.js"
-import { InvalidSessionError, TemporaryError } from "./errors.js"
+const Fetcher = require("./fetcher.js")
+const ops = require("./operations.js")
+const { InvalidSessionError, TemporaryError } = require("./errors.js")
 
 
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0"
 
-export const FriendFilter = {
+const FriendFilter = {
   CURRENT: "CURRENT",
   INVITING: "INVITING",
   ACCEPTING: "ACCEPTING",
 }
 
-export class Session {
+class Session {
 
   constructor() {
     this.fetcher = new Fetcher({ userAgent: UA })
@@ -169,3 +169,5 @@ export class Session {
   }
 
 }
+
+module.exports = { Session, FriendFilter }
