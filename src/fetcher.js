@@ -1,8 +1,7 @@
 
-this.BigInt = require("big-integer")
-
 const fetch = require("cross-fetch")
-const { URL, URLSearchParams } = require("whatwg-url")
+const qs = require("qs")
+const url = require("url")
 
 class Fetcher {
   userAgent = ""
@@ -30,7 +29,7 @@ class Fetcher {
   }
 
   async post(url, data = {}) {
-    const body = String(new URLSearchParams(data))
+    const body = qs.stringify(data)
 
     const response = await fetch(url, {
       method: "POST",
@@ -68,9 +67,14 @@ class Fetcher {
 
 }
 
+function originOf(u) {
+  const parsed = url.parse(u)
+  return parsed.protocol + "://" + parsed.host
+}
+
 function formatCookie(cookies, url) {
   const now = Date.now()
-  const { origin } = new URL(url)
+  const origin = originOf(url)
   const entry = cookies[origin]
   if (entry) {
     return {
@@ -91,7 +95,7 @@ function formatCookie(cookies, url) {
 
 function parseSetCookie(response) {
   let result = {}
-  const { origin } = new URL(response.url)
+  const origin = originOf(response.url)
 
   const joinnedSetCookie = response.headers.get("set-cookie")
   if (joinnedSetCookie === null) {
