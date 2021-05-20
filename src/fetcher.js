@@ -96,7 +96,7 @@ function parseSetCookie(response) {
     return result
   }
 
-  const separator = /(?<!;\s?expires=(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)),\s?/
+  const separator = /,\s(?!\d\d-(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\d\d\d\d\s\d\d:\d\d:\d\d\sGMT;)/
   for (const hv of joinnedSetCookie.split(separator)) {
     const cookie = parseCookieHeaderValue(hv)
 
