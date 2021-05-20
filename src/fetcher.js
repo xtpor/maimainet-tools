@@ -1,6 +1,6 @@
 
 const fetch = require("cross-fetch")
-const { URL, URLSearchParams } = require("url")
+const { URL, URLSearchParams } = require("whatwg-url")
 
 class Fetcher {
   userAgent = ""
