@@ -1,4 +1,6 @@
 
+this.BigInt = require("big-integer")
+
 const fetch = require("cross-fetch")
 const { URL, URLSearchParams } = require("whatwg-url")
 
