@@ -1,5 +1,6 @@
 
 const fetch = require("cross-fetch")
+const { URL, URLSearchParams } = require("url")
 
 class Fetcher {
   userAgent = ""
@@ -90,14 +91,17 @@ function parseSetCookie(response) {
   let result = {}
   const { origin } = new URL(response.url)
 
-  const headerValues = response.headers.raw()['set-cookie']
-  if (Array.isArray(headerValues)) {
-    for (const hv of headerValues ) {
-      const cookie = parseCookieHeaderValue(hv)
+  const joinnedSetCookie = response.headers.get("set-cookie")
+  if (joinnedSetCookie === null) {
+    return result
+  }
 
-      result[origin] = result[origin] || {}
-      result[origin][cookie.key] = cookie
-    }
+  const separator = /(?<!;\s?expires=(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)),\s?/
+  for (const hv of joinnedSetCookie.split(separator)) {
+    const cookie = parseCookieHeaderValue(hv)
+
+    result[origin] = result[origin] || {}
+    result[origin][cookie.key] = cookie
   }
 
   return result

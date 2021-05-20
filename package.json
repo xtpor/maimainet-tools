@@ -14,8 +14,10 @@
   "author": "Tintin Ho <me@tintinho.net>",
   "license": "MIT",
   "dependencies": {
+    "assert": "^2.0.0",
     "cross-fetch": "^3.1.4",
-    "node-html-parser": "^3.2.0"
+    "node-html-parser": "^3.2.0",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "eslint": "^7.26.0"

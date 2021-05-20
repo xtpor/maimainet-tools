@@ -1,6 +1,6 @@
 const fs = require("fs")
 
-const { Session, FriendFilter } = require("..")
+const { Session } = require("..")
 
 const SESSION_STORAGE = "/tmp/maimainet-test.state"
 
